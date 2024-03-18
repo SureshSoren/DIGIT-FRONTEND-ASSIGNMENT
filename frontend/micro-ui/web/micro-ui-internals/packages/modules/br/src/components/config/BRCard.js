@@ -24,6 +24,20 @@ const BRCard = () => {
         link: `/digit-ui/employee/br/birth`,
       },
     ],
+    styles: {
+      employeeCard: {
+        width: "300px",
+        height: 250,
+        backgroundColor: "white",
+      },
+      employeeTotalLink: {
+        textDecoration: "none",
+      },
+      employeeLink: {
+        textDecoration: "none",
+      },
+    },
+    className: "employee-card",
   };
 
   return <EmployeeModuleCard {...propsForModuleCard} />;

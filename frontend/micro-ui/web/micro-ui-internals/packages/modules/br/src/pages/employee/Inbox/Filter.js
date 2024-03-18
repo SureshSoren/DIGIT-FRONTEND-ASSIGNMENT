@@ -1,16 +1,27 @@
 import React, { useCallback, useState } from "react";
-import { ActionBar, RemoveableTag, CloseSvg, Loader, DateRange, Localities, ApplyFilterBar, SubmitBar, Dropdown, RefreshIcon } from "@egovernments/digit-ui-react-components";
+import {
+  ActionBar,
+  RemoveableTag,
+  CloseSvg,
+  Loader,
+  DateRange,
+  Localities,
+  ApplyFilterBar,
+  SubmitBar,
+  Dropdown,
+  RefreshIcon,
+} from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 
 const Filter = ({ type = "desktop", onClose, onSearch, onFilterChange, searchParams }) => {
   const { t } = useTranslation();
   const [localSearchParams, setLocalSearchParams] = useState(() => ({ ...searchParams }));
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const state = tenantId?.split('.')[0];
+  const state = tenantId?.split(".")[0];
   const { isLoading, data } = Digit.Hooks.useCommonMDMS(state, "mseva", ["EventCategories"]);
 
   const clearAll = () => {
-    setLocalSearchParams({ eventCategory: null, eventStatus: [], range: { startDate: null, endDate: new Date(""), title: "" } })
+    setLocalSearchParams({ eventCategory: null, eventStatus: [], range: { startDate: null, endDate: new Date(""), title: "" } });
     onFilterChange({ eventCategory: null, eventStatus: [], range: { startDate: null, endDate: new Date(""), title: "" } });
     onClose?.();
   };
@@ -21,17 +32,15 @@ const Filter = ({ type = "desktop", onClose, onSearch, onFilterChange, searchPar
   };
   const handleChange = useCallback((data) => {
     setLocalSearchParams((prevLocalSearchParams) => ({ ...prevLocalSearchParams, ...data }));
-  },[])
+  }, []);
 
   const onStatusChange = (e, type) => {
-    if (e.target.checked) handleChange({ eventStatus: [...(localSearchParams?.eventStatus || []), type] })
-    else handleChange({ eventStatus: localSearchParams?.eventStatus?.filter(status => status !== type) })
-  }
+    if (e.target.checked) handleChange({ eventStatus: [...(localSearchParams?.eventStatus || []), type] });
+    else handleChange({ eventStatus: localSearchParams?.eventStatus?.filter((status) => status !== type) });
+  };
 
   if (isLoading) {
-    return (
-      <Loader />
-    );
+    return <Loader />;
   }
   return (
     <div className="filter">
@@ -52,13 +61,13 @@ const Filter = ({ type = "desktop", onClose, onSearch, onFilterChange, searchPar
             </span>
           )}
         </div>
-        <DateRange t={t} values={localSearchParams?.range} onFilterChange={handleChange} labelClass="filter-label" />
+        <DateRange t={t} values={localSearchParams?.range} onFilterChange={handleChange} labelClass="filter-label" filterLabel={"Date Filter"} />
         <div>
-          <SubmitBar style={{ width: '100%' }} onSubmit={() => applyLocalFilters()} label={t("Apply")} />
+          <SubmitBar style={{ width: "100%" }} onSubmit={() => applyLocalFilters()} label={t("Apply")} />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Filter;

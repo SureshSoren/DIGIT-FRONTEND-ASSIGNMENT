@@ -35,7 +35,11 @@ const Inbox = ({ tenants, parentRoute }) => {
         type: "ulb",
       },
       {
-        label: t("Baby's NAME"),
+        label: t("Baby's First Name"),
+        name: "babyFirstName",
+      },
+      {
+        label: t("Baby's Last Name"),
         name: "babyLastName",
       },
     ];
@@ -49,6 +53,7 @@ const Inbox = ({ tenants, parentRoute }) => {
   ];
 
   const onSearch = (params) => {
+    debugger;
     let updatedParams = { ...params };
     if (!params?.ulb) {
       updatedParams = { ...params, ulb: { code: tenantId } };
@@ -62,8 +67,10 @@ const Inbox = ({ tenants, parentRoute }) => {
 
   const globalSearch = (rows, columnIds) => {
     // return rows;
-    return rows?.filter((row) =>
-      searchParams?.babyLastName ? row.original?.babyLastName?.toUpperCase().startsWith(searchParams?.babyLastName.toUpperCase()) : true
+    return rows?.filter(
+      (row) =>
+        (searchParams?.babyLastName ? row.original?.babyLastName?.toUpperCase().startsWith(searchParams?.babyLastName?.toUpperCase()) : true) &&
+        (searchParams?.babyFirstName ? row.original?.babyFirstName?.toUpperCase().startsWith(searchParams?.babyFirstName?.toUpperCase()) : true)
     );
   };
 
@@ -89,7 +96,11 @@ const Inbox = ({ tenants, parentRoute }) => {
       <p>{}</p>
       <DesktopInbox
         t={t}
-        data={brData?.data?.BirthRegistrationApplications}
+        data={
+          brData?.data?.BirthRegistrationApplications?.length > 0
+            ? brData?.data?.BirthRegistrationApplications
+            : [{ id: brData?.data?.BirthRegistrationApplications?.length + 1 || 0, babyFirstName: "Test", babyLastName: "Test" }]
+        }
         links={links}
         parentRoute={parentRoute}
         searchParams={searchParams}

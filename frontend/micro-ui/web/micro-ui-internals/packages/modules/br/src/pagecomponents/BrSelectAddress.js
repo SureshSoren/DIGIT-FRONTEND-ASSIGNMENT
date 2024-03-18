@@ -10,11 +10,9 @@ const BrSelectAddress = ({ t, config, onSelect, formData = {}, userType, registe
       type: "text",
       name: "permanentAddress",
       validation: {
-       
-        pattern: Digit.Utils.getPattern('Name'),
+        pattern: Digit.Utils.getPattern("Name"),
         title: t("CORE_COMMON_APPLICANT_NAME_INVALID"),
       },
-    
     },
     {
       label: "City",
@@ -22,12 +20,11 @@ const BrSelectAddress = ({ t, config, onSelect, formData = {}, userType, registe
       name: "permanentCity",
       validation: {
         isRequired: true,
-        pattern: Digit.Utils.getPattern('Name'),
+        pattern: Digit.Utils.getPattern("Name"),
         title: t("CORE_COMMON_APPLICANT_NAME_INVALID"),
       },
-      
+      isMandatory: true,
     },
-  
   ];
 
   function setValue(value, input) {
@@ -37,29 +34,35 @@ const BrSelectAddress = ({ t, config, onSelect, formData = {}, userType, registe
   return (
     <div>
       {inputs?.map((input, index) => {
-        let currentValue=formData && formData[config.key] && formData[config.key][input.name]||'';
-        return(<React.Fragment key={index}>
-          {errors[input.name] && <CardLabelError>{t(input.error)}</CardLabelError>}
-          <LabelFieldPair>
-            <CardLabel className="card-label-smaller">
-              {t(input.label)}
-              {input.isMandatory ? " * " : null}
-            </CardLabel>
-            <div className="field">
-              <TextInput
-                key={input.name}
-                value={formData && formData[config.key] ? formData[config.key][input.name] : undefined}
-                onChange={(e) => setValue(e.target.value, input.name)}
-                disable={false}
-                defaultValue={undefined}
-                {...input.validation}
-              />
-              
-            {currentValue&&currentValue.length>0&&!currentValue.match(Digit.Utils.getPattern('Name'))&&<CardLabelError style={{ width: "100%", marginTop: '-15px', fontSize: '16px', marginBottom: '12px'}}>{t("CORE_COMMON_APPLICANT_NAME_INVALID")}</CardLabelError>}
-            </div>
-          </LabelFieldPair>
-        </React.Fragment>
-      )})}
+        let currentValue = (formData && formData[config.key] && formData[config.key][input.name]) || "";
+        return (
+          <React.Fragment key={index}>
+            {errors[input.name] && <CardLabelError>{t(input.error)}</CardLabelError>}
+            <LabelFieldPair>
+              <CardLabel className="card-label-smaller">
+                {t(input.label)}
+                {input.isMandatory ? " * " : null}
+              </CardLabel>
+              <div className="field">
+                <TextInput
+                  key={input.name}
+                  value={formData && formData[config.key] ? formData[config.key][input.name] : undefined}
+                  onChange={(e) => setValue(e.target.value, input.name)}
+                  disable={false}
+                  defaultValue={undefined}
+                  {...input.validation}
+                />
+
+                {currentValue && currentValue.length > 0 && !currentValue.match(Digit.Utils.getPattern("Name")) && (
+                  <CardLabelError style={{ width: "100%", marginTop: "-15px", fontSize: "16px", marginBottom: "12px" }}>
+                    {t("CORE_COMMON_APPLICANT_NAME_INVALID")}
+                  </CardLabelError>
+                )}
+              </div>
+            </LabelFieldPair>
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 };

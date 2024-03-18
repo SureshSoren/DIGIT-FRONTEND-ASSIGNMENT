@@ -2,7 +2,15 @@ import { useClearNotifications, useEvents, useNotificationCount } from "./events
 import useCreateEvent from "./events/useCreateEvent";
 import useUpdateEvent from "./events/useUpdateEvent";
 import {
-  useBulkPdfDetails, useDemandSearch, useFetchBillsForBuissnessService, useFetchCitizenBillsForBuissnessService, useFetchPayment, useGetPaymentRulesForBusinessServices, usePaymentSearch, usePaymentUpdate, useRecieptSearch
+  useBulkPdfDetails,
+  useDemandSearch,
+  useFetchBillsForBuissnessService,
+  useFetchCitizenBillsForBuissnessService,
+  useFetchPayment,
+  useGetPaymentRulesForBusinessServices,
+  usePaymentSearch,
+  usePaymentUpdate,
+  useRecieptSearch,
 } from "./payment";
 import { useInitStore } from "./store";
 import useAccessControl from "./useAccessControl";
@@ -46,11 +54,15 @@ import useGenderMDMS from "./useGenderMDMS";
 
 import useEmployeeSearch from "./useEmployeeSearch";
 
+import useBRCreate from "./br/useBRCreate";
+import useBRDetails from "./br/useBRDetails";
+import useBRInbox from "./br/useBrInbox";
+import useBRSearch from "./br/useBRSearch";
+
 import useDashboardConfig from "./dss/useDashboardConfig";
 import useDSSDashboard from "./dss/useDSSDashboard";
 import useGetChart from "./dss/useGetChart";
 import useDssMdms from "./dss/useMDMS";
-
 
 import useHRMSCount from "./hrms/useHRMSCount";
 import useHRMSCreate from "./hrms/useHRMScreate";
@@ -58,8 +70,6 @@ import useHRMSGenderMDMS from "./hrms/useHRMSGender";
 import useHrmsMDMS from "./hrms/useHRMSMDMS";
 import useHRMSSearch from "./hrms/useHRMSsearch";
 import useHRMSUpdate from "./hrms/useHRMSUpdate";
-
-
 
 import useDocCreate from "./engagement/useCreate";
 import useDocDelete from "./engagement/useDelete";
@@ -77,16 +87,12 @@ import useSurveySubmitResponse from "./surveys/useSubmitResponse";
 import useSurveyInbox from "./surveys/useSurveyInbox";
 import useSurveyUpdate from "./surveys/useUpdate";
 
-
-
 import useGetDSSAboutJSON from "./useGetDSSAboutJSON";
 import useGetDSSFAQsJSON from "./useGetDSSFAQsJSON";
 import useGetFAQsJSON from "./useGetFAQsJSON";
 import useGetHowItWorksJSON from "./useHowItWorksJSON";
 import { usePrivacyContext } from "./usePrivacyContext";
 import useStaticData from "./useStaticData";
-
-
 
 const pgr = {
   useComplaintDetails,
@@ -104,6 +110,12 @@ const pgr = {
   useComplaintStatusCount,
 };
 
+const br = {
+  useBRCreate,
+  useBRDetails,
+  useBRInbox,
+  useBRSearch,
+};
 
 const dss = {
   useMDMS: useDssMdms,
@@ -111,7 +123,6 @@ const dss = {
   useDSSDashboard,
   useGetChart,
 };
-
 
 const hrms = {
   useHRMSSearch,
@@ -121,9 +132,6 @@ const hrms = {
   useHRMSCount,
   useHRMSGenderMDMS,
 };
-
-
-
 
 const events = {
   useInbox: useEventInbox,
@@ -182,11 +190,11 @@ const Hooks = {
   useAccessControl,
   usePrivacyContext,
   pgr,
- 
+  br,
   dss,
-  
+
   hrms,
- 
+
   events,
   engagement,
   survey,
@@ -203,7 +211,7 @@ const Hooks = {
   useStaticData,
   useDynamicData,
   useBulkPdfDetails,
-  useLocation
+  useLocation,
 };
 
 export default Hooks;

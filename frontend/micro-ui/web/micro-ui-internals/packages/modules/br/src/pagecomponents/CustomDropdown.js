@@ -3,7 +3,6 @@ import { LabelFieldPair, CardLabel, TextInput, CardLabelError, RadioButtons } fr
 import { useLocation } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 
-
 const CustomDropdown = ({ t, config, onSelect, formData = {}, userType, register, errors }) => {
   const { pathname: url } = useLocation();
 
@@ -20,9 +19,6 @@ const CustomDropdown = ({ t, config, onSelect, formData = {}, userType, register
     },
   ];
 
-
- 
-  
   function setValue(value, input) {
     onSelect(config.key, { ...formData[config.key], [input]: value });
   }
@@ -38,44 +34,6 @@ const CustomDropdown = ({ t, config, onSelect, formData = {}, userType, register
               {input.isMandatory ? " * " : null}
             </CardLabel>
             <div className="field">
-            {/* <Controller
-                defaultValue={formData?.[populators.name]}
-                render={({ onChange, ref, value }) => (
-                  // <TextInput  value={formData?.[populators.name]} type={type} name={populators.name} onChange={onChange} inputRef={ref}
-                  // errorStyle={errors?.[populators.name]}
-                  // />
-                  <RadioButtons
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                  options={[
-                    {
-                      code: "MALE",
-                      name: "MALE",
-                    },
-                    {
-                      code: "FEMALE",
-                      name: "FEMALE",
-                    },
-                    {
-                      code: "TRANSGENDER",
-                      name: "TRANSGENDER",
-                    },
-                  ]}
-                  // options={HRMenu}
-                  key={populators.name}
-                  optionsKey="name"
-                  selectedOption={formData && formData[config.key] ? formData[config.key][input.name] : null}
-                  onSelect={(e) => setValue(e, input.name)}
-                  disable={false}
-                  defaultValue={undefined}
-                  t={t}
-                  {...input.validation}
-                />
-                )}
-                name={populators.name}
-                rules={{ required: isMandatory, ...populators.validation }}
-                control={control}
-              /> */}
-
               <RadioButtons
                 style={{ display: "flex", justifyContent: "space-between" }}
                 options={[
@@ -92,7 +50,6 @@ const CustomDropdown = ({ t, config, onSelect, formData = {}, userType, register
                     name: "TRANSGENDER",
                   },
                 ]}
-                // options={HRMenu}
                 key={input.name}
                 optionsKey="name"
                 selectedOption={formData && formData[config.key] ? formData[config.key][input.name] : null}

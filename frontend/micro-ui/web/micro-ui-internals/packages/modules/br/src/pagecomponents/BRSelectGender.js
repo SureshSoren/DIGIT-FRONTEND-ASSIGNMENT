@@ -18,9 +18,6 @@ const BRSelectGender = ({ t, config, onSelect, formData = {}, userType, register
     },
   ];
 
-
- 
-  
   function setValue(value, input) {
     onSelect(config.key, { ...formData[config.key], [input]: value });
   }
@@ -52,7 +49,6 @@ const BRSelectGender = ({ t, config, onSelect, formData = {}, userType, register
                     name: "TRANSGENDER",
                   },
                 ]}
-                // options={HRMenu}
                 key={input.name}
                 optionsKey="name"
                 selectedOption={formData && formData[config.key] ? formData[config.key][input.name] : null}

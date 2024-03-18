@@ -1,18 +1,8 @@
-import React, { useEffect, useState } from "react";
-import {
-  CardLabel,
-  LabelFieldPair,
-  Dropdown,
-  UploadFile,
-  Toast,
-  Loader,
-  CardHeader,
-  CardSectionHeader,
-} from "@egovernments/digit-ui-react-components";
+import React, { useCallback, useEffect, useState } from "react";
+import { CardLabel, LabelFieldPair, Dropdown, UploadFile, Toast, Loader, CardSectionHeader } from "@egovernments/digit-ui-react-components";
 import { useLocation } from "react-router-dom";
 
 const SelectDocuments = ({ t, config, onSelect, userType, formData, setError: setFormError, clearErrors: clearFormErrors, formState }) => {
-  const tenantId = Digit.ULBService.getCurrentTenantId();
   const stateId = Digit.ULBService.getStateId();
   const [documents, setDocuments] = useState(formData?.documents?.documents || []);
   const [error, setError] = useState(null);
@@ -38,7 +28,6 @@ const SelectDocuments = ({ t, config, onSelect, userType, formData, setError: se
     "MutationDocuments",
   ]);
 
-
   const mutationDocs = data?.PropertyTax?.MutationDocuments;
   const commonDocs = data?.PropertyTax?.Documents;
 
@@ -46,13 +35,13 @@ const SelectDocuments = ({ t, config, onSelect, userType, formData, setError: se
     ? mutationDocs?.map?.((doc) => commonDocs.find((e) => doc.code === e.code) || doc)
     : data?.PropertyTax?.Documents;
 
-  const goNext = () => {
+  const goNext = useCallback(() => {
     onSelect(config.key, { documents, propertyTaxDocumentsLength: propertyTaxDocuments?.length });
-  };
+  }, [config.key, documents, onSelect, propertyTaxDocuments?.length]);
 
   useEffect(() => {
     goNext();
-  }, [documents]);
+  }, [documents, goNext]);
 
   if (isLoading) {
     return <Loader />;
@@ -62,11 +51,6 @@ const SelectDocuments = ({ t, config, onSelect, userType, formData, setError: se
     <div>
       {isMutation ? <CardSectionHeader>{t("DOCUMENTS")} </CardSectionHeader> : null}
       {propertyTaxDocuments?.map((document, index) => {
-        // if (document.code === "OWNER.SPECIALCATEGORYPROOF") {
-        //   if (formData?.owners?.every((user) => user.ownerType.code === "NONE" || !user.ownerType?.code)) {
-        //     return null;
-        //   }
-        // }
         return (
           <SelectDocument
             key={index}
@@ -110,7 +94,6 @@ function SelectDocument({
   propertyInitialValues,
 }) {
   const filteredDocument = documents?.filter((item) => item?.documentType?.includes(doc?.code))[0];
-  const tenantId = Digit.ULBService.getCurrentTenantId();
   const [selectedDocument, setSelectedDocument] = useState(
     filteredDocument
       ? { ...filteredDocument, active: filteredDocument?.status === "ACTIVE", code: filteredDocument?.documentType }
@@ -129,19 +112,18 @@ function SelectDocument({
   const { dropdownData } = doc;
   const { dropdownFilter, enabledActions, filterCondition } = doc?.additionalDetails || {};
   var dropDownData = dropdownData;
-  // let hideInput = false;
   const [isHidden, setHidden] = useState(false);
 
-  const addError = () => {
+  const addError = useCallback(() => {
     let type = formState.errors?.[config.key]?.type;
     if (!Array.isArray(type)) type = [];
     if (!type.includes(doc.code)) {
       type.push(doc.code);
       setFormError(config.key, { type });
     }
-  };
+  }, [config.key, doc.code, formState.errors, setFormError]);
 
-  const removeError = () => {
+  const removeError = useCallback(() => {
     let type = formState.errors?.[config.key]?.type;
     if (!Array.isArray(type)) type = [];
     if (type.includes(doc?.code)) {
@@ -152,7 +134,7 @@ function SelectDocument({
         setFormError(config.key, { type });
       }
     }
-  };
+  }, [clearFormErrors, config.key, doc?.code, formState.errors, setFormError]);
 
   useEffect(() => {
     if (selectedDocument?.code) {
@@ -183,7 +165,7 @@ function SelectDocument({
     } else if (isHidden) {
       removeError();
     }
-  }, [uploadedFile, selectedDocument, isHidden]);
+  }, [uploadedFile, selectedDocument, isHidden, setDocuments, addError, removeError]);
 
   useEffect(() => {
     if (action === "update") {
@@ -206,7 +188,6 @@ function SelectDocument({
       if (file) {
         if (file.size >= 5242880) {
           setError(t("CS_MAXIMUM_UPLOAD_SIZE_EXCEEDED"));
-          // if (!formState.errors[config.key]) setFormError(config.key, { type: doc?.code });
         } else {
           try {
             setUploadedFile(null);
@@ -235,7 +216,7 @@ function SelectDocument({
         setUploadedFile(null);
       }
     }
-  }, [formData?.additionalDetails?.reasonForTransfer?.code]);
+  }, [doc.code, formData?.additionalDetails?.reasonForTransfer?.code, selectedDocument?.code]);
 
   if (filterCondition) {
     const { filterValue, jsonPath, onArray, arrayAttribute, formDataPath, formArrayAttrPath } = filterCondition;
@@ -328,7 +309,14 @@ function SelectDocument({
           <Dropdown
             className="form-field"
             selected={selectedDocument}
-            disable={dropDownData?.length === 0 || (propertyInitialValues?.documents && propertyInitialValues?.documents.length>0 && propertyInitialValues?.documents.filter((document) => document.documentType.includes(doc?.code)).length>0? enabledActions?.[action].disableDropdown : false)}
+            disable={
+              dropDownData?.length === 0 ||
+              (propertyInitialValues?.documents &&
+              propertyInitialValues?.documents.length > 0 &&
+              propertyInitialValues?.documents.filter((document) => document.documentType.includes(doc?.code)).length > 0
+                ? enabledActions?.[action].disableDropdown
+                : false)
+            }
             option={dropDownData.map((e) => ({ ...e, i18nKey: e.code?.replaceAll(".", "_") }))}
             select={handleSelectDocument}
             optionKey="i18nKey"
@@ -348,7 +336,13 @@ function SelectDocument({
             message={uploadedFile ? `1 ${t(`CS_ACTION_FILEUPLOADED`)}` : t(`CS_ACTION_NO_FILEUPLOADED`)}
             textStyles={{ width: "100%" }}
             inputStyles={{ width: "280px" }}
-            disabled={(propertyInitialValues?.documents && propertyInitialValues?.documents.length>0 && propertyInitialValues?.documents.filter((document) => document.documentType.includes(doc?.code)).length>0? enabledActions?.[action].disableUpload : false) || !selectedDocument?.code}
+            disabled={
+              (propertyInitialValues?.documents &&
+              propertyInitialValues?.documents.length > 0 &&
+              propertyInitialValues?.documents.filter((document) => document.documentType.includes(doc?.code)).length > 0
+                ? enabledActions?.[action].disableUpload
+                : false) || !selectedDocument?.code
+            }
             buttonType="button"
             error={!uploadedFile}
           />
