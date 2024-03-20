@@ -56,7 +56,6 @@ const Search = ({ onSearch, searchParams, searchFields, type, onClose, isInboxPa
   };
 
   const clearSearch = () => {
-    debugger;
     reset({ ulb: null, babyFirstName: "", babyLastName: "" });
     onSearch({ ulb: null, babyFirstName: "", babyLastName: "" });
   };

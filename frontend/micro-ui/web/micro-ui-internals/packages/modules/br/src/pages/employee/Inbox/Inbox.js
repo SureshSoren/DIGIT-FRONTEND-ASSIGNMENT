@@ -53,7 +53,6 @@ const Inbox = ({ tenants, parentRoute }) => {
   ];
 
   const onSearch = (params) => {
-    debugger;
     let updatedParams = { ...params };
     if (!params?.ulb) {
       updatedParams = { ...params, ulb: { code: tenantId } };
