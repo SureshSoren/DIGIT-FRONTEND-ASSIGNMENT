@@ -11,17 +11,17 @@ const BRCard = () => {
     kpis: [
       {
         label: t("Application"),
-        link: `/digit-ui/employee/br/Inbox`,
+        link: `/sanitation-ui/employee/br/Inbox`,
       },
     ],
     links: [
       {
         label: t("Inbox"),
-        link: `/digit-ui/employee/br/Inbox`,
+        link: `/sanitation-ui/employee/br/Inbox`,
       },
       {
         label: t("Registration"),
-        link: `/digit-ui/employee/br/birth`,
+        link: `/sanitation-ui/employee/br/birth`,
       },
     ],
     styles: {
